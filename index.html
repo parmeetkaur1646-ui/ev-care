@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EV CARE</title><link rel="stylesheet" href="style.css">
+</head><body><div id="app">
+<div id="banner"></div>
+
+<!-- 1. Splash -->
+<section class="screen dark" id="splash">
+  <img class="ic-big" src="images/icons/high_voltage.png" alt=""><div class="logo">EV <span>CARE</span></div>
+  <p>Your EV. Our Responsibility.</p><img data-img="splash" alt="scooter">
+</section>
+
+<!-- 2. Onboarding -->
+<section class="screen light" id="onboarding" style="text-align:center;padding-top:50px">
+  <h1>Ride Smart,<br>We'll Take Care!</h1><p>Complete service for your electric scooter</p>
+  <img data-img="onboard" style="width:100%;margin:20px 0" alt="scooter">
+  <p style="color:var(--blue);font-size:24px">● ○ ○</p>
+  <button class="btn" onclick="show('login')">Get Started</button>
+  <button class="link" onclick="show('login')">Login</button>
+</section>
+
+<!-- 3. Login / OTP -->
+<div id="recaptcha-container"></div>
+<section class="screen light" id="login">
+  <div class="top"><button class="link back" onclick="show('onboarding')">‹</button></div>
+  <h1>Welcome Back!</h1><p>Login to continue</p><br>
+  <label>Your name</label><input id="userName" placeholder="Enter your full name" maxlength="40">
+  <label>Phone number</label>
+  <div class="row"><input style="width:64px" value="+91" disabled><input id="phone" style="flex:1" type="tel" maxlength="10" placeholder="10-digit mobile number" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+  <button class="btn" onclick="getOtp()">Get OTP</button>
+  <div id="otpBox" style="display:none"><p style="text-align:center" id="otpHint">Enter the OTP</p><br>
+    <div class="otp" id="otpInputs"></div>
+    <button class="btn green" onclick="verifyOtp()">Verify &amp; Continue</button></div>
+  <p style="text-align:center;color:#889">or</p>
+  <button class="btn alt" onclick="doLogin()"><b style="color:#ea4335">G</b> Continue with Google</button>
+  <button class="btn alt" onclick="doLogin()">  Continue with Apple</button>
+  <p style="text-align:center;font-size:14px">Don't have an account? <b style="color:var(--blue)" onclick="showBanner('Enter your number and tap Get OTP to sign up')">Sign Up</b></p>
+</section>
+
+<!-- 4. Home -->
+<section class="screen" id="home">
+  <div class="row between"><div><h2 id="hello"></h2><small>Your EV is in great shape <img class="ic" src="images/icons/rocket.png" alt=""></small></div><span onclick="showBanner('No new notifications')" style="font-size:24px;cursor:pointer"><img class="ic" src="images/icons/bell.png" alt="" style="width:28px;height:28px"></span></div>
+  <div class="scard"><div><small>My Scooter</small><br><b id="scName"></b><br><small id="scReg"></small></div><img data-img="home" alt="scooter"></div>
+  <div class="grid">
+    <div class="tile" onclick="startBooking('')"><div class="ico"><img src="images/icons/wrench.png" alt=""></div>Book<br>Service</div>
+    <div class="tile emerg" onclick="show('sos')"><div class="ico"><img src="images/icons/police_car_light.png" alt=""></div>Emergency<br>Help</div>
+    <div class="tile" onclick="startBooking('home')"><div class="ico"><img src="images/icons/house.png" alt=""></div>Home<br>Service</div>
+    <div class="tile" onclick="startBooking('pickup')"><div class="ico"><img src="images/icons/delivery_truck.png" alt=""></div>Pickup &amp;<br>Drop</div>
+  </div>
+  <img class="pkg" data-img="pkg" alt="Service Packages - Save More!" onclick="showBanner('Service packages coming soon')">
+</section>
+
+<!-- 5. Add scooter -->
+<section class="screen light" id="addScooter">
+  <div class="top"><button class="link back" onclick="show('home')">‹</button>Add My Scooter</div>
+  <img data-img="add" style="width:70%;display:block;margin:0 auto" alt="scooter">
+  <label>Brand</label><input id="fBrand"><label>Model</label><input id="fModel">
+  <label>Registration No.</label><input id="fReg"><label>Purchase Date</label><input id="fDate" type="date">
+  <button class="btn" onclick="saveScooter()">Save Vehicle</button>
+</section>
+
+<!-- 6-9. Booking wizard -->
+<section class="screen" id="booking">
+  <div class="top"><button class="link back" onclick="prevStep()">‹</button>Book Service</div>
+  <div class="prog" id="prog"></div>
+  <h3 id="stepTitle"></h3><div id="stepBody"></div>
+  <button class="btn" id="nextBtn" onclick="nextStep()">Next</button>
+</section>
+
+<!-- 10. Confirmed -->
+<section class="screen light" id="confirm" style="text-align:center;padding-top:80px">
+  <div class="ok"><img src="images/icons/check_mark_button.png" alt="" style="width:72px"></div><h1>Booking Confirmed!</h1><p>Your booking ID is</p><h3 id="bkId"></h3>
+  <p>Technician will reach you soon.</p>
+  <button class="btn" onclick="startTracking()">Track Live</button>
+  <button class="btn alt" onclick="show('home')">Back to Home</button>
+</section>
+
+<!-- 11. Tracking -->
+<section class="screen" id="tracking">
+  <div class="top"><button class="link back" onclick="show('home')">‹</button>Track Your Service</div>
+  <div class="card" id="steps"></div>
+  <img class="map" data-img="map" alt="map">
+  <button class="btn alt" onclick="show('details')">Service Details</button>
+</section>
+
+<!-- 12. Service details -->
+<section class="screen" id="details">
+  <div class="top"><button class="link back" onclick="show('tracking')">‹</button>Service Details</div>
+  <div class="card tech"><img data-img="tech" alt="technician"><div><small>Technician</small><br><b id="techName"></b><br><small id="techInfo"></small></div></div>
+  <div class="card"><small>Service Type</small><br><b id="svcName"></b><br><br><small>Estimated Cost</small><br><b style="font-size:20px">₹<span id="estCost"></span></b></div>
+  <div class="card" id="checklist"></div>
+  <button class="btn" onclick="openChat()">Chat with Technician</button>
+  <button class="btn alt" onclick="location.href='tel:'+APP_DATA.supportPhone">Call Now</button>
+  <button class="btn green" onclick="show('payment')">Proceed to Payment</button>
+</section>
+
+<!-- 13. Payment (Amazon-style checkout) -->
+<section class="screen" id="payment">
+  <div class="top"><button class="link back" onclick="show('details')">‹</button>Select a payment method</div>
+  <div class="card"><b id="orderName"></b><div class="bill" id="bill"></div></div>
+  <p style="font-size:12px;color:#556;margin:4px 2px"><img class="ic" src="images/icons/locked.png" alt=""> Your payment information is secure</p>
+
+  <div class="card" id="paidNotice" style="display:none;text-align:center">
+    <img src="images/icons/check_mark_button.png" style="width:48px" alt=""><h3>This booking is already paid</h3>
+    <p id="paidInfo"></p><button class="btn" onclick="viewInvoice()">View invoice</button></div>
+  <div id="payForm">
+  <div class="card method" id="pm-upi"><div class="mh" onclick="pickPay('upi')"><img class="ic" src="images/icons/mobile_phone.png" alt="">&nbsp;UPI (GPay / PhonePe / Paytm)<span class="radio"></span></div>
+    <div class="panel" style="text-align:center"><div id="upiApps"></div>
+      <small>Paying to</small> <b id="upiId"></b> <button class="link" onclick="copyUpi()">Copy</button><br>
+      <small>or scan with any UPI app</small><br><div id="qr" style="display:inline-block;margin-top:6px"></div></div></div>
+
+  <div class="card method" id="pm-card"><div class="mh" onclick="pickPay('card')"><img class="ic" src="images/icons/credit_card.png" alt="">&nbsp;Credit or debit card<span class="radio"></span></div>
+    <div class="panel"><input id="cNum" inputmode="numeric" maxlength="19" placeholder="Card number" oninput="formatCard(this)"><small id="cardType"></small>
+      <input id="cName" placeholder="Name on card">
+      <div class="row"><input id="cExp" style="flex:1" maxlength="5" placeholder="MM/YY" oninput="formatExp(this)"><input id="cCvv" style="flex:1" type="password" inputmode="numeric" maxlength="3" placeholder="CVV"></div>
+      <button class="btn" style="background:#000" onclick="payWithGooglePay()">G Pay &nbsp;Pay with Google Pay</button>
+      </div></div>
+
+  <div class="card method" id="pm-net"><div class="mh" onclick="pickPay('net')"><img class="ic" src="images/icons/bank.png" alt="">&nbsp;Net Banking<span class="radio"></span></div>
+    <div class="panel"><div class="row" id="bankList"></div></div></div>
+
+  <div class="card method" id="pm-cash"><div class="mh" onclick="pickPay('cash')"><img class="ic" src="images/icons/money_bag.png" alt="">&nbsp;Pay on Service (Cash)<span class="radio"></span></div>
+    <div class="panel"><small>Pay the technician in cash when the service is done.</small></div></div>
+
+  <div class="card"><div class="row between"><b style="font-size:18px">Order Total:</b><b style="font-size:22px;color:#b12704">₹<span id="payTotal"></span></b></div></div>
+  <button class="btn green" id="payBtn" onclick="payNow()">Pay Now</button>
+  </div>
+</section>
+
+<!-- 14. Invoice -->
+<section class="screen light" id="invoice" style="text-align:center">
+  <div class="top">Invoice</div><div class="ok"><img id="invIcon" src="images/icons/check_mark_button.png" alt="" style="width:56px"></div><h2 id="invTitle">Payment Successful!</h2>
+  <p>Invoice No: INV789456<br><span id="invDate"></span></p>
+  <div class="card bill" id="invBody" style="text-align:left"></div>
+  <div class="row"><button class="btn alt" style="flex:1" onclick="downloadInvoice()">Download Invoice</button>
+  <button class="btn alt" style="flex:1" onclick="shareInvoice()">Share</button></div>
+  <button class="btn" onclick="show('home')">Back to Home</button>
+</section>
+
+<!-- 15. History -->
+<section class="screen" id="bookings"><div class="top">Service History</div><div id="bkList"></div></section>
+
+<!-- 16. Parts -->
+<section class="screen" id="parts"><div class="top">Spare Parts <span id="cartCount" style="position:absolute;right:0;font-size:14px"></span></div>
+  <img class="pkg" style="margin:0 0 12px" data-img="parts" alt="Genuine Parts">
+  <div class="row" id="partFilters"></div><div id="partList"></div></section>
+
+<!-- 17. SOS -->
+<section class="screen sos" id="sos">
+  <div><img src="images/icons/police_car_light.png" alt="" style="width:64px"></div><h1>SOS</h1><h2>My Scooter Broke Down!</h2><br>
+  <button class="btn" onclick="shareLocation()">Share Location</button>
+  <p>Or Call Us<br><b>+91-93043-08473</b></p>
+  <button class="btn" onclick="location.href='tel:'+APP_DATA.supportPhone">Call Now</button>
+  <button class="btn" style="background:none;color:#fff;border:1.5px solid #fff" onclick="show('home')">Back</button>
+</section>
+
+<!-- 18. Profile -->
+<section class="screen" id="profile"><div class="top">My Profile</div>
+  <div class="avatar" id="avatar"></div><h2 id="pName" style="text-align:center"></h2><p id="pPhone" style="text-align:center"></p><br>
+  <div id="pLinks"></div></section>
+
+<section class="screen" id="info"><div class="top"><button class="link back" onclick="show('profile')">‹</button><span id="infoTitle"></span></div>
+  <div class="card" id="infoText"></div></section>
+
+<nav id="nav">
+  <button data-go="home" onclick="show('home')"><img src="images/icons/house.png" alt=""><br>Home</button>
+  <button data-go="bookings" onclick="show('bookings')"><img src="images/icons/clipboard.png" alt=""><br>Bookings</button>
+  <button data-go="parts" onclick="show('parts')"><img src="images/icons/nut_and_bolt.png" alt=""><br>Parts</button>
+  <button data-go="profile" onclick="show('profile')"><img src="images/icons/bust_in_silhouette.png" alt=""><br>Profile</button>
+</nav>
+<div id="payModal"><div class="card" style="text-align:center">
+  <div class="pane" id="payAsk"><h3>Did you complete the payment?</h3><p><small>Finish paying in your UPI app, then enter the 12-digit UPI reference number shown there.</small></p>
+    <input id="utr" inputmode="numeric" maxlength="12" placeholder="UPI reference number (12 digits)">
+    <button class="btn green" onclick="confirmPaid()">I have paid</button><button class="btn alt" onclick="closePay()">Cancel</button></div>
+  <div class="pane" id="payWait" style="display:none"><div class="spin"></div><h3>Processing payment...</h3><small>Please do not press back or close the app</small></div>
+  <div class="pane" id="payOtp" style="display:none"><h3><img class="ic" src="images/icons/locked.png" alt=""> Bank verification</h3><p><small id="otpFor"></small></p>
+    <input id="cardOtp" inputmode="numeric" maxlength="6" placeholder="Enter OTP"><button class="btn green" onclick="verifyCardOtp()">Submit</button><button class="btn alt" onclick="closePay()">Cancel</button></div>
+  <div class="pane" id="payBank" style="display:none"><h3 id="bankName"></h3>
+    <p><small>Demo bank page. Authorize this payment of ₹<span id="bankAmt"></span> to EV CARE.</small></p>
+    <button class="btn green" onclick="bankAuthorize()">Authorize payment</button><button class="btn alt" onclick="bankCancel()">Cancel</button></div>
+  <div class="pane" id="payFail" style="display:none"><div><img src="images/icons/cross_mark.png" alt="" style="width:56px"></div><h3>Payment failed</h3><p id="failMsg"></p><button class="btn" onclick="closePay()">Try another payment method</button></div>
+</div></div>
+<div id="modal"><div class="card"><h3>Chat with Technician</h3><div id="chatLog" style="min-height:60px"></div>
+  <input id="chatIn" placeholder="Type a message"><button class="btn" onclick="sendChat()">Send</button>
+  <button class="btn alt" onclick="closeChat()">Close</button></div></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://pay.google.com/gp/p/js/pay.js"></script>
+<script src="data.js"></script><script src="app.js"></script>
+</body></html>

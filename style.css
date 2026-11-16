@@ -1,0 +1,78 @@
+/* ===== EV CARE styles (matches reference design) ===== */
+:root{--navy:#071936;--blue:#1967D2;--white:#fff;--gray:#F4F7FB;--green:#22C55E;--red:#EF4444;}
+*{box-sizing:border-box;margin:0;font-family:"Segoe UI",Arial,sans-serif}
+body{background:#cfd9ea;display:flex;justify-content:center}
+#app{width:100%;max-width:430px;min-height:100vh;background:var(--gray);position:relative;overflow:hidden}
+.screen{display:none;padding:18px 16px 96px;min-height:100vh}
+.screen.active{display:block}
+.top{display:flex;align-items:center;justify-content:center;position:relative;font-weight:bold;font-size:17px;margin-bottom:14px}
+.top .back{position:absolute;left:0;font-size:22px;padding:0 6px}
+.dark{background:linear-gradient(160deg,#071936,#0b2a66);color:#fff;text-align:center;padding-top:70px}
+.dark img{width:100%;border-radius:14px;margin-top:30px}
+.logo{font-size:40px;font-weight:900;font-style:italic;letter-spacing:1px}.logo span{color:#4aa3ff}
+.light{background:#fff}
+.card{background:#fff;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 1px 6px #0b2a6612}
+h1,h2,h3{margin:8px 0}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:12px;background:var(--blue);color:#fff;font-size:16px;font-weight:600;margin:10px 0;cursor:pointer}
+.btn.alt{background:#fff;color:var(--blue);border:1.5px solid #cdd8ee}
+.btn.green{background:var(--green)}
+.link{background:none;border:0;color:var(--blue);font-size:16px;font-weight:600;cursor:pointer;padding:8px}
+input,textarea,select{width:100%;padding:13px;border:1px solid #d5ddec;border-radius:10px;margin:5px 0;font-size:15px;background:#fff}
+label{font-size:14px;color:#445;font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.between{justify-content:space-between}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:#fff;border-radius:14px;padding:16px 8px;text-align:center;cursor:pointer;font-weight:600;font-size:14px;box-shadow:0 1px 6px #0b2a6612}
+.ico{width:42px;height:42px;border-radius:50%;background:#e6effc;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 6px}
+.tile.emerg .ico{background:#fde4e4}
+.scard{background:linear-gradient(120deg,#dbe9fb,#f3f8ff);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin:10px 0}
+.scard img{width:46%;mix-blend-mode:multiply}
+.pkg{width:100%;border-radius:14px;margin-top:12px;display:block}
+.choice{display:flex;align-items:center;gap:12px;border:2px solid transparent;cursor:pointer}
+.choice b{margin-left:auto}.choice.sel,.chip.sel{border-color:var(--blue);background:#eaf2fe}
+.choice img{width:62px;height:46px;object-fit:cover;border-radius:8px}
+.radio{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid #bbc}.sel .radio{border:6px solid var(--blue)}
+.chip{padding:11px 14px;border-radius:12px;border:2px solid #dde5f3;background:#fff;cursor:pointer;text-align:center;flex:1;min-width:40%}
+.badge{background:#dcfce7;color:#15803d;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600}
+.otp{display:flex;gap:10px;justify-content:center}.otp input{width:54px;text-align:center;font-size:22px}
+#banner{position:fixed;top:-90px;left:50%;transform:translateX(-50%);background:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 4px 14px #0004;transition:top .4s;z-index:9;max-width:400px;width:90%}
+#banner.show{top:12px}
+nav{display:none;position:fixed;bottom:0;width:100%;max-width:430px;background:#fff;border-top:1px solid #e1e7f2}
+nav.show{display:flex}
+nav button{flex:1;padding:10px 0;border:0;background:none;font-size:12px;cursor:pointer;color:#778}
+nav button.on{color:var(--blue);font-weight:bold}
+.prog{display:flex;justify-content:space-between;margin:6px 8px 16px;font-size:11px;text-align:center;color:#889}
+.prog i{display:flex;width:26px;height:26px;border-radius:50%;background:#cdd8ee;color:#fff;align-items:center;justify-content:center;font-style:normal;margin:0 auto 3px}
+.prog .on i{background:var(--blue)}.prog .on{color:var(--blue)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:14px}
+.cal b{font-size:12px;color:#889}.cal span{padding:9px 0;border-radius:50%;cursor:pointer}
+.cal .off{color:#ccd;cursor:default}.cal .pick{background:var(--blue);color:#fff}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.slots .chip{min-width:0}
+.step{display:flex;gap:12px;padding:9px 0;color:#99a}.step small{display:block;color:#889}
+.step.done{color:#111}.step i{width:22px;height:22px;border-radius:50%;background:#cdd8ee;color:#fff;font-style:normal;text-align:center;font-size:13px;line-height:22px}.step.done i{background:var(--green)}
+.map{width:100%;border-radius:14px;display:block}
+.sos{background:var(--red);color:#fff;text-align:center;padding-top:70px}
+.sos .btn{background:#fff;color:var(--red)}
+#modal{display:none;position:fixed;inset:0;background:#0007;align-items:center;justify-content:center;z-index:8}
+#modal.show{display:flex}#modal .card{width:90%;max-width:380px}
+.bill div{display:flex;justify-content:space-between;padding:5px 0}
+.bill .tot{background:#e8f0fd;border-radius:8px;padding:8px;font-weight:bold;font-size:18px}
+.big{font-size:34px;font-weight:800;text-align:center}
+.avatar{width:70px;height:70px;border-radius:50%;background:var(--blue);color:#fff;font-size:26px;font-weight:bold;display:flex;align-items:center;justify-content:center;margin:6px auto}
+.tech{display:flex;gap:12px;align-items:center}.tech img{width:56px;height:56px;border-radius:12px;object-fit:cover}
+.pt{width:60px;height:60px;object-fit:contain}
+.ok{color:var(--green);font-size:72px;text-align:center}
+
+#payModal{display:none;position:fixed;inset:0;background:#0007;align-items:center;justify-content:center;z-index:8}
+#payModal.show{display:flex}#payModal .card{width:90%;max-width:380px}
+.spin{width:44px;height:44px;border:5px solid #dde5f3;border-top-color:var(--blue);border-radius:50%;margin:10px auto;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.method{border:2px solid transparent}.method.sel{border-color:var(--blue)}
+.mh{display:flex;align-items:center;font-weight:600;cursor:pointer}
+.panel{display:none;margin-top:12px}.method.sel .panel{display:block}
+.chip.bank{min-width:100%;text-align:left}
+/* real-life 3D object icons */
+.ic{width:1.3em;height:1.3em;vertical-align:-0.25em;border-radius:0!important;margin:0!important}
+.ico img{width:28px;height:28px;border-radius:0;margin:0}
+.dark img.ic-big{width:76px;height:76px;margin:0 auto;border-radius:0}
+nav img{width:26px;height:26px}
+.ok img{width:72px}
